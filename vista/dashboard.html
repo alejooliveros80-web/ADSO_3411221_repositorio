@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,16 +8,44 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <title>CLUB ACERIAS</title>
     <style>
-        .icono-principal { font-size: 45px; color: #c20909b9; }
+        .header-mr {
+            background-color: rgba(255, 0, 0, 0.673);
+            color: black;
+            padding: 20px 30px;
+        }
+
+        .module-card {
+            border-top: 4px solid #ff3300;
+            border-radius: 10px;
+            transition: 0.2;
+            cursor: pointer;
+            height: 100%
+        }
+
+        .module-card.asociado {
+            border-top-color: brown
+        }
+
+        .module-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+        }
+
+        .icono-principal {
+            font-size: 45px;
+            color: #c20909b9;
+        }
     </style>
 </head>
+
 <body class="bg-light">
     <div class="header-mr d flex justify-content-between alling-items-center">
         <h3>CLUB ACERIAS - Panel principal</h3>
         <div class="text-end">
-            <small>Pepito Perez</small>
-            <button class="btn btn-danger btn-sm"><i class="bi bi-boxarrow-right"></i>Cerrar seción</button>
-        </div>
+            <small id="nombreUsuario"></small>
+            <button class="btn btn-danger btn-sm mt-1" onclick="cerrarSesion()">
+                <i class="bi bi-box-arrow-right"></i>cerrar sesion
+            </button>
     </div>
     <div class="container py-4">
         <h5 class="mb-4 fw-bold">Modulos del clup de asociados</h5>
@@ -32,7 +61,8 @@
                     </p>
                 </div>
             </div>
-              <div class="col-md-3">
+
+            <div class="col-md-3">
                 <div class="card module-card shadow-sm p-3">
                     <i class="bi bi-people icono-principal"></i>
                     <h4 class="text-primary">Empleados</h4>
@@ -46,26 +76,55 @@
             <div class="col-md-3">
                 <div class="card module-card shadow-sm p-3">
                     <i class="bi bi-people icono-principal"></i>
-                    <h4 class="text-primary">Dirigentes</h4>
-                    <strong>Gestion de asociados</strong>
+                    <h4 class="text-primary">Administrador</h4>
+                    <strong>Gestion de administrador</strong>
                     <p class="small text-muted mt-2">
-                        Administra la informacion de los dirigentes, inclutendo sus datos personales,
-                        histrial de mmembresia y estado de cuenta.
+                        Administra la informacion de los administradores, inclutendo sus datos personales,
+                        y estado de cuenta.
                     </p>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="card module-card shadow-sm p-3">
-                    <i class="bi bi-bag-check"></i>
-                    <h4 class="text-primary">Inventario</h4>
-                    <strong>Gestion de inventario</strong>
+                    <i class="bi bi-currency-bitcoin icono-principal"></i>
+                    <h4 class="text-primary">Prestamos</h4>
+                    <strong>Gestion de Finanzas</strong>
                     <p class="small text-muted mt-2">
-                        Administra la informacion del inventario, inclutendo sus datos personales,
-                        histrial de mmembresia y estado de cuenta.
+                        Administra la informacion financiera, incluyendo los datos personales,
+                        historial de mmembresia y estados de cuenta.
                     </p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card module-card shadow-sm p-3">
+                    <i class="bi bi-calendar-check-fill icono-principal"></i>
+                    <h4 class="text-primary">Actividades</h4>
+                    <strong>Gestion de actividades</strong>
+                    <p class="small text-muted mt-2">
+                        Administra la informacion de las actividades, inclutendo sus participantes,
+                        horario y estado de espera o activo.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div id="tarjetaAsociado" class="row g-4 d-none">
+            <div Class="col-md-3">
+                <div class="card module-card asociado shadow-sm p-3">
+                    <i class="bi bi-person-vcard icono-principal"></i>
+                    <h4 class="text-succes mt-2">Mi perfil</h4>
+                    <p class="small text-muted">Ver mis datos y prestamos</p>
+                </div>
+            </div>
+            <div Class="col-md-3">
+                <div class="card module-card asociado shadow-sm p-3">
+                    <i class="bi bi-person-vcard icono-principal"></i>
+                    <h4 class="text-succes mt-2">Mi pagos</h4>
+                    <p class="small text-muted">Ver abonos de prestamos</p>
                 </div>
             </div>
         </div>
     </div>
 </body>
+<script src="../controlador/dashboard.js"></script>
+
 </html>

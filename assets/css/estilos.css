@@ -5,7 +5,7 @@
 }
 
 body {
-    background-color: rgb(230, 234, 239);
+    background-color: rgb(141, 3, 3);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -13,18 +13,21 @@ body {
     padding: 10px;
     box-sizing: border-box;
     width: 100%;
+}
+ body > div {
+    width: 100%;
     max-width: 450px;
 }
 
 h2 {
-    background-color: rgb(31, 58, 95);
-    color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
+    color: rgb(244, 240, 240);
     padding: 6px;
     margin-bottom: 10px;
     font-size: 20px;
     text-align: center;
-    border-bottom: 9px solid rgba(255, 9, 9, 0.832);
-    border-radius: 10px;
+    border-bottom: 8px solid rgba(254, 249, 249, 0.832);
+    border-radius: 9px;
 }
 
 .grupo-input {
@@ -51,23 +54,23 @@ button{
     flex: 1;
     padding: 6px;
     border-radius: 5px;
-    background-color: rgb(194, 65, 12);
-    color: rgb(255, 255, 255);
+    background-color: rgb(255, 1, 1);
+    color: rgb(0, 0, 0);
 
 }
 
 form {
-    color: rgb(31, 41, 51);
-    background-color: rgb(248, 250, 252);
+    color: rgb(255, 5, 5);
+    background-color: rgb(0, 0, 0);
     padding: 12px 20px;
     margin: 2px 0;
-    border: 5px rgb(154, 165, 177);
+    border: 5px rgb(0, 0, 0);
     border-radius: 10px;
-     border-bottom: 9px solid rgb(194, 65, 12);
+     border-bottom: 9px solid rgb(194, 12, 12);
 }
 
 input, select {
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(0, 0, 0);
     padding: 6px 10px;
     border-radius: 5px;
 }

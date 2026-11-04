@@ -1,84 +1,86 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>CLUB ACERIAS</title>
-    <link rel="stylesheet" href="../assets/css/estilos.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de asociados | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
 </head>
-
-<body>
-    <div>
-        <h2>Registro de asociados - Acerias</h2>
-
-        <form id="FormRegistro" action="" method="post">
-            <div class="grupo-input"  class="grupo-input">
-                <label>Ingresar Documento:</label>
-                <input type="number" id="documento" placeholder="1938392928">
-            </div>
-
-            <div class="grupo-input" >
-                <label>Ingresar el Nombre</label>
-                <input type="text" id="nombre" required placeholder="pepito perez">
-            </div  >
-
-            <div class="grupo-input" >
-                <label>Ingresar el Apellido</label>
-                <input type="text" id="apellido" required placeholder="perez sanches">
-            </div>
-
-            <div class="grupo-input" >
-                <label>Ingresar la Fecha de Nacimiento</label>
-                <input type="date" id="fechaNacimiento" required placeholder="20/20/2020">
-            </div>
-
-            <div class="grupo-input" >
-                <label>Ingresar el Genero</label>
-                <div class="grupo-radio">
-                    <input type="radio" id="Masculino" value="M">
-                    <label>Masculino</label>
-                    <input type="radio" id="Femenino" value="F">
-                    <label>Femenino</label>
-                    <input type="radio" id="otro" value="otro">
-                    <label>Otro</label>
+<body class="form-page">
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Formularios del sistema">
+                <a href="registro.html" aria-current="page">Asociados</a>
+                <a href="registro_actividades.html">Actividades</a>
+                <a href="registro_pago.html">Pagos</a>
+                <a href="registro_prestamos.html">Préstamos</a>
+                <a href="dashboard.html">Panel</a>
+            </nav>
+        </div>
+    </header>
+    <main class="page-content">
+        <div class="page-heading">
+            <h1>Registro de asociados</h1>
+            <p>Ingresa la información personal y de contacto del asociado.</p>
+        </div>
+        <section class="form-card">
+            <form>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="documento">Documento</label>
+                        <input type="text" id="documento" name="documento" required placeholder="Ej. 1938392928">
+                    </div>
+                    <div class="form-field">
+                        <label for="fechaNacimiento">Fecha de nacimiento</label>
+                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Nombre(s)">
+                    </div>
+                    <div class="form-field">
+                        <label for="apellido">Apellido</label>
+                        <input type="text" id="apellido" name="apellido" required placeholder="Apellido(s)">
+                    </div>
+                    <div class="form-field full-width">
+                        <span class="form-label">Género</span>
+                        <div class="radio-options">
+                            <label><input type="radio" name="genero" value="M"> Masculino</label>
+                            <label><input type="radio" name="genero" value="F"> Femenino</label>
+                            <label><input type="radio" name="genero" value="otro"> Otro</label>
+                        </div>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="direccion">Dirección de residencia</label>
+                        <input type="text" id="direccion" name="direccion" required placeholder="Dirección">
+                    </div>
+                    <div class="form-field">
+                        <label for="ciudad">Ciudad</label>
+                        <select id="ciudad" name="ciudad" required>
+                            <option value="">Selecciona una ciudad</option>
+                            <option>Sogamoso</option>
+                            <option>Duitama</option>
+                            <option>Cerinza</option>
+                            <option>Otra</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" required placeholder="Ej. 3151234567">
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" required placeholder="nombre@correo.com">
+                    </div>
                 </div>
-            </div>
-
-            <div class="grupo-input" >
-                <label>Ingresar la Direccion</label>
-                <input type="text" id="direccionResidencia" required placeholder=" cra 21 #3-09">
-            </div >
-
-            <div class="grupo-input" >
-                <label>Ingresar la Ciudad</label>
-                <select id="ciudad" required>
-                    <option value="sogamoso">sogamoso</option>
-                    <option value="duitama">duitama</option>
-                    <option value="cerinza">cerinza</option>
-                </select>
-            </div  >
-
-            <div class="grupo-input" >
-                <label>Ingresar el Email</label>
-                <input type="email" id="email" required placeholder="pepito@gmail.com">
-            </div >
-
-            <div class="grupo-input" >
-                <label>Ingresar el Telefono</label>
-                <input type="tel" id="telefono" required placeholder=" 31548576485">
-            </div  >
-
-             <div class="grupo-botones" >
-                <button type="submit">guardar</button>
-                 <button type="reset">limpiar formulario</button>
-             </div  >
-
-             <div class="iniciar-sesion">
-                <p>Ya tienes una cuenta? <a href="login.html">Iniciar sesion</a></p>
-            </div>
-
-        </form>
-    </div>
+                <div class="form-actions">
+                    <button class="button-secondary" type="reset">Limpiar</button>
+                    <button class="button-primary" type="button">Guardar asociado</button>
+                </div>
+            </form>
+        </section>
+    </main>
 </body>
-
 </html>
+

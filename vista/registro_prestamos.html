@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de préstamos | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
+</head>
+<body class="form-page">
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Formularios del sistema">
+                <a href="registro.html">Asociados</a>
+                <a href="registro_actividades.html">Actividades</a>
+                <a href="registro_pago.html">Pagos</a>
+                <a href="registro_prestamos.html" aria-current="page">Préstamos</a>
+                <a href="dashboard.html">Panel</a>
+            </nav>
+        </div>
+    </header>
+    <main class="page-content">
+        <div class="page-heading">
+            <h1>Registro de préstamos</h1>
+            <p>Ingresa la información inicial de la solicitud de préstamo.</p>
+        </div>
+        <section class="form-card">
+            <form>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="documentoAsociado">Documento del asociado</label>
+                        <input type="text" id="documentoAsociado" name="documentoAsociado" required placeholder="Número de documento">
+                    </div>
+                    <div class="form-field">
+                        <label for="nombreAsociado">Nombre del asociado</label>
+                        <input type="text" id="nombreAsociado" name="nombreAsociado" required placeholder="Nombre completo">
+                    </div>
+                    <div class="form-field">
+                        <label for="fechaSolicitud">Fecha de solicitud</label>
+                        <input type="date" id="fechaSolicitud" name="fechaSolicitud" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="monto">Monto solicitado</label>
+                        <input type="number" id="monto" name="monto" min="1" step="1000" required placeholder="$ 0">
+                    </div>
+                    <div class="form-field">
+                        <label for="plazo">Plazo de pago (meses)</label>
+                        <input type="number" id="plazo" name="plazo" min="1" required placeholder="Ej. 12">
+                    </div>
+                    <div class="form-field">
+                        <label for="tasa">Tasa de interés (%)</label>
+                        <input type="number" id="tasa" name="tasa" min="0" step="0.01" placeholder="Según política del club">
+                    </div>
+                    <div class="form-field">
+                        <label for="proposito">Destino del préstamo</label>
+                        <select id="proposito" name="proposito" required>
+                            <option value="">Selecciona una opción</option><option>Libre inversión</option><option>Educación</option><option>Salud</option><option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="estado">Estado de la solicitud</label>
+                        <select id="estado" name="estado" required>
+                            <option value="">Selecciona un estado</option><option>Pendiente</option><option>Aprobado</option><option>Rechazado</option>
+                        </select>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea id="observaciones" name="observaciones" placeholder="Información adicional de la solicitud"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="button-secondary" type="reset">Limpiar</button>
+                    <button class="button-primary" type="button">Guardar préstamo</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

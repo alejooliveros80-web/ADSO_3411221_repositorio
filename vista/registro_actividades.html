@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de actividades | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
+</head>
+<body class="form-page">
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Formularios del sistema">
+                <a href="registro.html">Asociados</a>
+                <a href="registro_actividades.html" aria-current="page">Actividades</a>
+                <a href="registro_pago.html">Pagos</a>
+                <a href="registro_prestamos.html">Préstamos</a>
+                <a href="dashboard.html">Panel</a>
+            </nav>
+        </div>
+    </header>
+    <main class="page-content">
+        <div class="page-heading">
+            <h1>Registro de actividades</h1>
+            <p>Registra una actividad y sus datos de programación.</p>
+        </div>
+        <section class="form-card">
+            <form>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="nombreActividad">Nombre de la actividad</label>
+                        <input type="text" id="nombreActividad" name="nombreActividad" required placeholder="Ej. Asamblea general">
+                    </div>
+                    <div class="form-field">
+                        <label for="tipoActividad">Tipo de actividad</label>
+                        <select id="tipoActividad" name="tipoActividad" required>
+                            <option value="">Selecciona un tipo</option>
+                            <option>Asamblea</option><option>Deportiva</option><option>Recreativa</option><option>Institucional</option><option>Otra</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" id="fecha" name="fecha" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="lugar">Lugar</label>
+                        <input type="text" id="lugar" name="lugar" required placeholder="Lugar de realización">
+                    </div>
+                    <div class="form-field">
+                        <label for="horaInicio">Hora de inicio</label>
+                        <input type="time" id="horaInicio" name="horaInicio" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="horaFin">Hora de finalización</label>
+                        <input type="time" id="horaFin" name="horaFin">
+                    </div>
+                    <div class="form-field">
+                        <label for="responsable">Responsable</label>
+                        <input type="text" id="responsable" name="responsable" placeholder="Nombre del responsable">
+                    </div>
+                    <div class="form-field">
+                        <label for="cupo">Cupo de participantes</label>
+                        <input type="number" id="cupo" name="cupo" min="1" placeholder="Ej. 30">
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="descripcion">Descripción</label>
+                        <textarea id="descripcion" name="descripcion" placeholder="Detalles de la actividad"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="button-secondary" type="reset">Limpiar</button>
+                    <button class="button-primary" type="button">Guardar actividad</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de pago | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
+</head>
+<body class="form-page">
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Formularios del sistema">
+                <a href="registro.html">Asociados</a>
+                <a href="registro_actividades.html">Actividades</a>
+                <a href="registro_pago.html" aria-current="page">Pagos</a>
+                <a href="registro_prestamos.html">Préstamos</a>
+                <a href="dashboard.html">Panel</a>
+            </nav>
+        </div>
+    </header>
+    <main class="page-content">
+        <div class="page-heading">
+            <h1>Registro de pago</h1>
+            <p>Registra el pago realizado y asócialo con un miembro del club.</p>
+        </div>
+        <section class="form-card">
+            <form>
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="documentoAsociado">Documento del asociado</label>
+                        <input type="text" id="documentoAsociado" name="documentoAsociado" required placeholder="Número de documento">
+                    </div>
+                    <div class="form-field">
+                        <label for="nombreAsociado">Nombre del asociado</label>
+                        <input type="text" id="nombreAsociado" name="nombreAsociado" required placeholder="Nombre completo">
+                    </div>
+                    <div class="form-field">
+                        <label for="fechaPago">Fecha del pago</label>
+                        <input type="date" id="fechaPago" name="fechaPago" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="concepto">Concepto</label>
+                        <select id="concepto" name="concepto" required>
+                            <option value="">Selecciona un concepto</option>
+                            <option>Cuota de afiliación</option><option>Cuota mensual</option><option>Abono a préstamo</option><option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="valor">Valor pagado</label>
+                        <input type="number" id="valor" name="valor" min="1" step="100" required placeholder="$ 0">
+                    </div>
+                    <div class="form-field">
+                        <label for="metodo">Método de pago</label>
+                        <select id="metodo" name="metodo" required>
+                            <option value="">Selecciona un método</option>
+                            <option>Efectivo</option><option>Transferencia</option><option>Consignación</option><option>Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="referencia">Número de referencia</label>
+                        <input type="text" id="referencia" name="referencia" placeholder="Opcional">
+                    </div>
+                    <div class="form-field">
+                        <label for="estadoPago">Estado</label>
+                        <select id="estadoPago" name="estadoPago" required>
+                            <option value="">Selecciona el estado</option><option>Pagado</option><option>Pendiente</option>
+                        </select>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="observaciones">Observaciones</label>
+                        <textarea id="observaciones" name="observaciones" placeholder="Notas adicionales"></textarea>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button class="button-secondary" type="reset">Limpiar</button>
+                    <button class="button-primary" type="button">Guardar pago</button>
+                </div>
+            </form>
+        </section>
+    </main>
+</body>
+</html>
