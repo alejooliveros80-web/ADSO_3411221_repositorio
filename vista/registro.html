@@ -25,7 +25,7 @@
             <p>Ingresa la información personal y de contacto del asociado.</p>
         </div>
         <section class="form-card">
-            <form>
+            <form id="FormRegistro" action="../model/guardar_asociado.php" method="POST">
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="documento">Documento</label>
@@ -76,11 +76,12 @@
                 </div>
                 <div class="form-actions">
                     <button class="button-secondary" type="reset">Limpiar</button>
-                    <button class="button-primary" type="button">Guardar asociado</button>
+                    <button class="button-primary" type="submit">Guardar asociado</button>
                 </div>
-            </form>
+                <p id="mensaje_registro" role="status" aria-live="polite"></p>
+            </form> 
         </section>
     </main>
+    <script src="../controlador/asociados.js"></script>
 </body>
 </html>
-
