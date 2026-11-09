@@ -27,6 +27,11 @@ try {
         }
     }
     
+if (mb_strlen($datos['panswoard']) < 8) {
+    http_response_code(400);
+    throw new Exception("La contraseña debe tener mínimo 8 caracteres");
+}
+
     if (!filter_var($datos['email'], FILTER_VALIDATE_EMAIL)) {
         http_response_code(400);
         throw new Exception("El campo 'email' no es válido.");
