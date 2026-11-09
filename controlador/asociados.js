@@ -8,6 +8,15 @@ formulario.addEventListener("submit", async function (event) {
 
     const asociado = Object.fromEntries(new FormData(formulario).entries());
 
+    if (asociado.panswoard !== asociado.confirmarPanswoard) {
+        mensajeRegistro.textContent = "Las contraseñas no coinciden";
+        mensajeRegistro.style.color = "red";
+        return;
+    }
+
+    delete asociado.confirmarPanswoard;
+
+
     btnGuardar.disabled = true;
     mensajeRegistro.textContent = "Guardando...";
 

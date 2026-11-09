@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de asociados | Club Acerías</title>
     <link rel="stylesheet" href="../assets/css/formularios.css">
 </head>
+
 <body class="form-page">
     <header class="site-header">
         <div class="header-inner">
@@ -25,7 +27,7 @@
             <p>Ingresa la información personal y de contacto del asociado.</p>
         </div>
         <section class="form-card">
-            <form id="FormRegistro" action="../model/guardar_asociado.php" method="POST">
+            <form id="FormRegistro" action="../modelo/guardarAsociados.php" method="POST">
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="documento">Documento</label>
@@ -46,8 +48,8 @@
                     <div class="form-field full-width">
                         <span class="form-label">Género</span>
                         <div class="radio-options">
-                            <label><input type="radio" name="genero" value="M"> Masculino</label>
-                            <label><input type="radio" name="genero" value="F"> Femenino</label>
+                            <label><input type="radio" name="genero" value="Masculino"> Masculino</label>
+                            <label><input type="radio" name="genero" value="Femenino"> Femenino</label>
                             <label><input type="radio" name="genero" value="otro"> Otro</label>
                         </div>
                     </div>
@@ -73,15 +75,30 @@
                         <label for="email">Correo electrónico</label>
                         <input type="email" id="email" name="email" required placeholder="nombre@correo.com">
                     </div>
-                </div>
-                <div class="form-actions">
-                    <button class="button-secondary" type="reset">Limpiar</button>
-                    <button class="button-primary" type="submit">Guardar asociado</button>
-                </div>
-                <p id="mensaje_registro" role="status" aria-live="polite"></p>
-            </form> 
+
+                    <div class="form-field">
+                        <label for="panswoard">Contraseña</label>
+                        <input type="password" id="panswoard" name="panswoard" required
+                            placeholder="Ingresa tu contraseña">
+                    </div>
+
+                    <div class="form-field">
+                        <label for="confirmarPanswoard">Confirmar contraseña</label>
+                        <input type="password" id="confirmarPanswoard" name="confirmarPanswoard" required
+                            placeholder="Confirma tu contraseña">
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="button-secondary" type="reset">Limpiar</button>
+                        <button class="button-primary" type="submit">Guardar asociado</button>
+                    </div>
+                    <p id="mensaje_registro" role="status" aria-live="polite"></p>
+            </form>
         </section>
     </main>
     <script src="../controlador/asociados.js"></script>
 </body>
+
 </html>
+
+//http://localhost/proyecto_club/vista/registro.html

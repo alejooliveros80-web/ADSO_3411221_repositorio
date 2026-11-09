@@ -2,6 +2,7 @@
 header("Content-Type: application/json; charset=utf-8");
 require_once __DIR__ . '/asociados.php';
 
+
 try { 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         http_response_code(405);
@@ -17,7 +18,7 @@ try {
         throw new Exception("Datos inválidos");
     }
 
-    $camposRequeridos = ["documento", "nombre", "apellido", "fechaNacimiento", "genero", "direccion", "ciudad", "telefono", "email"];
+    $camposRequeridos = ["documento", "nombre", "apellido", "fechaNacimiento", "genero", "direccion", "ciudad", "telefono", "email", "panswoard"];
 
     foreach ($camposRequeridos as $campo) {
         if (!isset($datos[$campo]) || trim($datos[$campo]) === '') {
