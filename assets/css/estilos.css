@@ -85,3 +85,7 @@ input, select {
     padding : 0;
     text-align: center;
 }
+.grupo-input input {
+    color: #fff;
+    background-color: #222;
+}

@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () =>{
     }
 
     const nombre = localStorage.getItem('nombre');
-    const rol = localStorage.getItem('rol')
+    const rol = (localStorage.getItem('rol') || '').toLowerCase();
 
     document.getElementById('nombreUsuario').textContent = nombre;
 
@@ -19,4 +19,9 @@ document.addEventListener('DOMContentLoaded', () =>{
         document.getElementById('tarjetaAsociado').classList.remove('d-none');
     }
 });
-
+function cerrarSesion() {
+    localStorage.removeItem("logueado");
+    localStorage.removeItem("rol");
+    localStorage.removeItem("nombre");
+    window.location.href = "login.html";
+}
