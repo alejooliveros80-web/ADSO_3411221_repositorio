@@ -12,24 +12,30 @@
     <div>
         <h2>INICIAR SESION</h2>
 
+        <!-- Formulario que envía las credenciales al controlador PHP. -->
         <form id="FormRegistro" action="../modelo/iniciarSesion.php" method="post">
 
+            <!-- Campo para escribir el correo registrado. -->
             <div class="grupo-input">
                 <label>Ingresar el Email:</label>
                 <input type="email" id="email" name="email" required placeholder="alejo.oliveros80@gmail.com">
             </div>
 
+            <!-- Campo para escribir la contraseña de la cuenta. -->
             <div class="grupo-input">
                 <label>Ingresar Contraseña:</label>
                 <input type="password" id="contrasena" name="panswoard" required placeholder="********">
             </div>
 
+            <!-- Botón que dispara el envío del formulario. -->
             <div class="grupo-botones">
                 <button type="submit">Iniciar Sesion</button>
             </div>
+            <!-- Enlace para quienes todavía no tienen una cuenta. -->
             <div class="crear-cuenta">
                 <p>¿No tienes una cuenta? <a href="registro.html">Crear cuenta</a></p>
             </div>
+            <!-- Aquí se muestran errores o avisos del inicio de sesión. -->
             <p id="mensajeLogin" class="text-danger mt-3 mb-0" role="alert"></p>
         </form>
     </div>

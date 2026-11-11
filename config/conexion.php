@@ -1,5 +1,6 @@
 <?php 
 
+// Define los datos de acceso y crea la conexión con MySQL.
 class conexion
 {
     private $host = "localhost";

@@ -1,9 +1,11 @@
+/* Reinicia márgenes y define la fuente general de la página. */
 * {
     margin: 0;
     padding: 0;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif
 }
 
+/* Centra el formulario y establece el fondo de la pantalla. */
 body {
     background-color: rgb(141, 3, 3);
     display: flex;
@@ -14,11 +16,13 @@ body {
     box-sizing: border-box;
     width: 100%;
 }
- body > div {
+/* Limita el ancho del bloque que contiene el título y el formulario. */
+body > div {
     width: 100%;
     max-width: 450px;
 }
 
+/* Da estilo al título de inicio de sesión. */
 h2 {
     background-color: rgb(13, 13, 13);
     color: rgb(244, 240, 240);
@@ -30,6 +34,7 @@ h2 {
     border-radius: 9px;
 }
 
+/* Organiza cada etiqueta y su campo en una columna. */
 .grupo-input {
     margin-bottom: 6px;
     display: flex;
@@ -41,6 +46,7 @@ label {
     font-size: 14px;
 }
 
+/* Centra el botón de envío. */
 .grupo-botones {
     display: flex;
     gap: 20px;
@@ -59,6 +65,7 @@ button{
 
 }
 
+/* Da formato al contenedor oscuro del formulario. */
 form {
     color: rgb(255, 5, 5);
     background-color: rgb(6, 6, 6);
@@ -85,6 +92,7 @@ input, select {
     padding : 0;
     text-align: center;
 }
+/* Mantiene visibles las letras en los campos oscuros. */
 .grupo-input input {
     color: #fff;
     background-color: #222;

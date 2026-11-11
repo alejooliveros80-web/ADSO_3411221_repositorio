@@ -1,8 +1,8 @@
-document.addEventListener('DOMContentLoaded', () =>{
+document.addEventListener('DOMContentLoaded', () => {
     const logueado = localStorage.getItem('logueado');
 
-    if (logueado !== 'true'){
-        window.location.href = 'login.html';
+    if (logueado !== 'true') {
+        window.location.href = '../vista/login.html';
         return;
     }
 
@@ -14,14 +14,24 @@ document.addEventListener('DOMContentLoaded', () =>{
     if (rol === 'admin') {
         document.getElementById('tarjetaAdministrador').classList.remove('d-none');
         document.getElementById('tarjetaAsociado').classList.add('d-none');
-    }else{
+    } else {
         document.getElementById('tarjetaAdministrador').classList.add('d-none');
         document.getElementById('tarjetaAsociado').classList.remove('d-none');
     }
 });
-function cerrarSesion() {
-    localStorage.removeItem("logueado");
-    localStorage.removeItem("rol");
-    localStorage.removeItem("nombre");
-    window.location.href = "login.html";
+
+async function cerrarSesion() {
+    try {
+        const respuesta = await  fetch("../modelo/cerrarSesion.php", {
+            method: "POST",
+        });
+        
+        if(!respuesta.ok){
+            throw new Error("Error al cerrar sesion"); 
+        }
+        localStorage.clear();
+        window.location.href = "../vista/login.html";
+    } catch (error) {
+        console.error("Error al cerrar sesion:", error);
+    }
 }
