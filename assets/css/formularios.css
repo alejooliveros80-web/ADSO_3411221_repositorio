@@ -108,3 +108,33 @@ body.form-page {
 }
 
 .form-label { font-size: .94rem; font-weight: 700; }
+
+/* Separa el botón de registro de la tabla. */
+.activity-actions { margin: 0 0 14px; }
+
+/* Permite desplazar la tabla horizontalmente en pantallas pequeñas. */
+.table-wrapper { width: 100%; overflow-x: auto; }
+.activities-table { width: 100%; min-width: 1050px; border-collapse: collapse; }
+.activities-table th, .activities-table td {
+    padding: 12px;
+    border-bottom: 1px solid var(--club-border);
+    text-align: left;
+    vertical-align: top;
+}
+.activities-table th { background: #f3f5f7; white-space: nowrap; }
+.empty-message { margin: 16px 0 0; color: var(--club-muted); }
+.empty-message[hidden] { display: none; }
+.enroll-button {
+    min-height: 36px;
+    border: 0;
+    border-radius: 6px;
+    padding: 8px 12px;
+    background: var(--club-red);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.enroll-button:hover:not(:disabled) { background: var(--club-red-dark); }
+.enroll-button:disabled { background: #aeb4bb; cursor: not-allowed; }

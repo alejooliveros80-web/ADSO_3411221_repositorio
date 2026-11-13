@@ -29,7 +29,8 @@ async function cerrarSesion() {
         if(!respuesta.ok){
             throw new Error("Error al cerrar sesion"); 
         }
-        localStorage.clear();
+        // Borra solo los datos de sesión y conserva actividades e inscripciones.
+        ['logueado', 'rol', 'nombre', 'email'].forEach(clave => localStorage.removeItem(clave));
         window.location.href = "../vista/login.html";
     } catch (error) {
         console.error("Error al cerrar sesion:", error);

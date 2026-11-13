@@ -12,7 +12,7 @@
             <p class="brand">CLUB ACERÍAS</p>
             <nav class="form-nav" aria-label="Formularios del sistema">
                 <a href="registro.html">Asociados</a>
-                <a href="registro_actividades.html" aria-current="page">Actividades</a>
+                <a href="actividades.html">Actividades</a>
                 <a href="registro_pago.html">Pagos</a>
                 <a href="registro_prestamos.html">Préstamos</a>
                 <a href="dashboard.html">Panel</a>
@@ -22,57 +22,39 @@
     <main class="page-content">
         <div class="page-heading">
             <h1>Registro de actividades</h1>
-            <p>Registra una actividad y sus datos de programación.</p>
+            <p>Agrega una actividad a la tabla del club.</p>
         </div>
         <section class="form-card">
-            <form>
+            <!-- Formulario para capturar los datos de una actividad nueva. -->
+            <form id="formularioActividad" action="../modelo/guardarActividad.php" method="post">
                 <div class="form-grid">
                     <div class="form-field">
                         <label for="nombreActividad">Nombre de la actividad</label>
                         <input type="text" id="nombreActividad" name="nombreActividad" required placeholder="Ej. Asamblea general">
                     </div>
                     <div class="form-field">
-                        <label for="tipoActividad">Tipo de actividad</label>
-                        <select id="tipoActividad" name="tipoActividad" required>
-                            <option value="">Selecciona un tipo</option>
-                            <option>Asamblea</option><option>Deportiva</option><option>Recreativa</option><option>Institucional</option><option>Otra</option>
-                        </select>
+                        <label for="fechaEvento">Fecha del evento</label>
+                        <input type="date" id="fechaEvento" name="fechaEvento" required>
                     </div>
                     <div class="form-field">
-                        <label for="fecha">Fecha</label>
-                        <input type="date" id="fecha" name="fecha" required>
+                        <label for="municipio">Municipio</label>
+                        <input type="text" id="municipio" name="municipio" maxlength="50" required placeholder="Ej. Duitama">
                     </div>
                     <div class="form-field">
-                        <label for="lugar">Lugar</label>
-                        <input type="text" id="lugar" name="lugar" required placeholder="Lugar de realización">
-                    </div>
-                    <div class="form-field">
-                        <label for="horaInicio">Hora de inicio</label>
-                        <input type="time" id="horaInicio" name="horaInicio" required>
-                    </div>
-                    <div class="form-field">
-                        <label for="horaFin">Hora de finalización</label>
-                        <input type="time" id="horaFin" name="horaFin">
-                    </div>
-                    <div class="form-field">
-                        <label for="responsable">Responsable</label>
-                        <input type="text" id="responsable" name="responsable" placeholder="Nombre del responsable">
-                    </div>
-                    <div class="form-field">
-                        <label for="cupo">Cupo de participantes</label>
-                        <input type="number" id="cupo" name="cupo" min="1" placeholder="Ej. 30">
-                    </div>
-                    <div class="form-field full-width">
-                        <label for="descripcion">Descripción</label>
-                        <textarea id="descripcion" name="descripcion" placeholder="Detalles de la actividad"></textarea>
+                        <label for="totalRecaudado">Total recaudado</label>
+                        <input type="number" id="totalRecaudado" name="totalRecaudado" min="0" step="0.01" value="0.00" required>
                     </div>
                 </div>
                 <div class="form-actions">
                     <button class="button-secondary" type="reset">Limpiar</button>
-                    <button class="button-primary" type="button">Guardar actividad</button>
+                    <button class="button-primary" type="submit">Guardar actividad</button>
                 </div>
+                <!-- Muestra el resultado que devuelve el servidor PHP. -->
+                <p id="mensajeActividad" class="form-hint" role="status" aria-live="polite"></p>
             </form>
         </section>
     </main>
+    <!-- Envía el formulario al servidor y carga las actividades desde MySQL. -->
+    <script src="../controlador/actividades.js"></script>
 </body>
 </html>

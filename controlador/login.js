@@ -35,6 +35,8 @@ formulario.addEventListener("submit", async function (e) {
         localStorage.setItem('logueado', 'true');
         localStorage.setItem('rol', resultado.rol);
         localStorage.setItem('nombre', resultado.nombre);
+        // Guarda el correo como identificador del asociado al inscribirse.
+        localStorage.setItem('email', formulario.elements.email.value.trim().toLowerCase());
 
         // Abre el panel después de iniciar sesión correctamente.
         window.location.href = 'dashboard.html';

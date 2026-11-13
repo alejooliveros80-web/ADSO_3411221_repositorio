@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividades | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
+</head>
+<body class="form-page">
+    <!-- Encabezado y navegación de las vistas del sistema. -->
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Navegación principal">
+                <a href="registro.html">Asociados</a>
+                <a href="actividades.html" aria-current="page">Actividades</a>
+                <a href="registro_pago.html">Pagos</a>
+                <a href="registro_prestamos.html">Préstamos</a>
+                <a href="dashboard.html">Panel</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <!-- Título y botón para abrir el formulario de registro. -->
+        <div class="page-heading">
+            <h1>Actividades disponibles</h1>
+            <p>Consulta la programación del club e inscríbete en una actividad.</p>
+        </div>
+
+        <!-- Tabla con las actividades disponibles y la acción para inscribirse. -->
+        <section class="form-card table-card" aria-label="Lista de actividades">
+            <div class="table-wrapper">
+                <table class="activities-table">
+                    <thead>
+                        <tr>
+                            <th>Actividad</th>
+                            <th>Fecha</th>
+                            <th>Municipio</th>
+                            <th>Total recaudado</th>
+                            <th>Inscritos</th>
+                            <th>Inscripción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaActividades">
+                        <!-- JavaScript agrega aquí las filas de actividades. -->
+                    </tbody>
+                </table>
+            </div>
+            <p id="mensajeVacio" class="empty-message">Todavía no hay actividades registradas.</p>
+            <!-- Aquí se muestran confirmaciones o problemas al inscribirse. -->
+            <p id="mensajeInscripcion" class="empty-message" role="status" hidden></p>
+        </section>
+    </main>
+
+    <!-- Carga el código que muestra las actividades almacenadas. -->
+    <script src="../controlador/actividades.js"></script>
+</body>
+</html>
