@@ -1,40 +1,45 @@
 <?php
 
-require_once __DIR__ . '/../Config/conexion.php';
+require_once __DIR__ . '/../config/conexion.php';
 
-class Actividad {
+class Actividad 
+{
+
     private $conexion;
 
-    public function __construct() {
+    public function __construct() 
+    {
         $conexion = new Conexion();
-        $this->conexion = $conexionDB->conectar();
+        $this->conexion = $conexion->conectar();
     }
 
-
-
-public function obtenerActividades(){
+public function obtenerActividades()
+{
     $sql = "SELECT * FROM actividades ORDER BY fechaEvento ASC";
     $consulta = $this->conexion->prepare($sql);
     $consulta->execute();
     return $consulta->fetchAll();
 }
 
-public function guardar(){
-    $sql = "INSERT INTO actividades (nombreActividad, municipio, fechaEvento) VALUES (:nombreActividad, :municipio, :fechaEvento)";
+public function guardar($datos)
+{
+    $sql = "INSERT INTO actividades (nombreActividad, municipio, fechaEvento, totalRecaudado) 
+            VALUES (:nombreActividad, :municipio, :fechaEvento, :totalRecaudado)";
     $consulta = $this->conexion->prepare($sql);
     return $consulta->execute([
-        ":nombreActividad" => $this->nombreActividad,
-        ":municipio" => $this->municipio,
-        ":fechaEvento" => $this->fechaEvento
+        ":nombreActividad" => $datos["nombreActividad"],
+        ":municipio" => $datos["municipio"],
+        ":fechaEvento" => $datos["fechaEvento"],
+        ":totalRecaudado" => $datos["totalRecaudado"]
     ]);
 }
 
-public function eliminar($idActividad){
+public function eliminar($idActividad)
+{
     $sql = "DELETE FROM actividades WHERE idActividad = :idActividad";
     $consulta = $this->conexion->prepare($sql);
     $consulta->execute([":idActividad" => $idActividad]);
     return $consulta->rowCount() > 0; //Retorna true si se elimino alguna fila
-
 }
 
 public function editar($datos){
