@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actividades | Club Acerías</title>
     <link rel="stylesheet" href="../assets/css/formularios.css">
 </head>
+
 <body class="form-page">
     <!-- Encabezado y navegación de las vistas del sistema. -->
     <header class="site-header">
@@ -24,9 +26,51 @@
     <main class="page-content">
         <!-- Título y botón para abrir el formulario de registro. -->
         <div class="page-heading">
+            <div class="form-actions activity-actions">
+                <button id="nuevaActividad" class="button-primary" type="button" hidden> Nueva Actividad </button>
+            </div>
             <h1>Actividades disponibles</h1>
             <p>Consulta la programación del club e inscríbete en una actividad.</p>
         </div>
+
+        <!--Formulario para que el administrador registre una actividad-->
+        <section id="formularioActividadSeccion" class="form-card" hidden>
+            <form id="formularioActividad">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="nombreActividad">Nombre de la actividad</label>
+                        <input type="text" id="nombreActividad" name="nombreActividad" maxlength="100" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="fechaEvento">Fecha del evento</label>
+                        <input type="date" id="fechaEvento" name="fechaEvento" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="municipio">Municipio</label>
+                        <input type="text" id="municipio" name="municipio" maxlength="50" required>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="totalRecaudado">Total recaudado</label>
+                        <input type="number" id="totalRecaudado" name="totalRecaudado" min="0" step="0.01" value="0"
+                            required>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button id="cancelarActividad" class="button-secondary" type="button">
+                        Cancelar
+                    </button>
+                    <button class="button-primary" type="submit">
+                        Guardar actividad
+                    </button>
+                </div>
+
+                <p id="mensajeActividad" class="form-hint" role="status" aria-live="polite"></p>
+            </form>
+        </section>
 
         <!-- Tabla con las actividades disponibles y la acción para inscribirse. -->
         <section class="form-card table-card" aria-label="Lista de actividades">
@@ -47,7 +91,9 @@
                     </tbody>
                 </table>
             </div>
-            <p id="mensajeVacio" class="empty-message">Todavía no hay actividades registradas.</p>
+            <p id="mensajeVacio" class="empty-message" hidden>
+                Todavía no hay actividades registradas.
+            </p>
             <!-- Aquí se muestran confirmaciones o problemas al inscribirse. -->
             <p id="mensajeInscripcion" class="empty-message" role="status" hidden></p>
         </section>
@@ -56,4 +102,5 @@
     <!-- Carga el código que muestra las actividades almacenadas. -->
     <script src="../controlador/actividades.js"></script>
 </body>
+
 </html>

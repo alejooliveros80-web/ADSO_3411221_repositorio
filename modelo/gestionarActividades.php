@@ -15,20 +15,31 @@ function leerdatos()
 
 function validarActividad($datos)
 {
-    $nombre=$datos['nombreActividad'] ?? null;
-    $fecha=$datos['fechaEvento'] ?? null;
+    $nombre = $datos['nombreActividad'] ?? null;
+    $fecha = $datos['fechaEvento'] ?? null;
     $municipio = $datos['municipio'] ?? null;
-    if(!is_string($nombre)|| trim($nombre) ==="" || strlen($nombre) > 100 || !is_string($municipio) || trim($municipio) === "" || strlen($municipio) > 50) { 
+    $fechaValida = is_string($fecha)
+    ? DateTime::createFromFormat("!Y-m-d", $fecha)
+    : false;
+$fechaCorrecta = $fechaValida &&
+    $fechaValida->format("Y-m-d") === $fecha;
+    if(!is_string($nombre)|| trim($nombre) ==="" || strlen($nombre) > 100 || !$fechaCorrecta || !is_string($municipio) || trim($municipio) === "" || strlen($municipio) > 50) { 
         http_response_code(400);
         throw new Exception(
-            "ingresa un nombre y municipio validos"
+            "ingresa un nombre, fecha y municipio validos"
         );
     }
-    return[
-        "nombreActividad"=>trim($nombre),
-        "fechaEvento"=>$fecha,
-        "municipio"=>trim($municipio)
-    ];
+    $totalRecaudado = $datos["totalRecaudado"] ?? null;
+if (!is_numeric($totalRecaudado) || (float)$totalRecaudado < 0) {
+    http_response_code(400);
+    throw new Exception("El total recaudado debe ser igual o mayor que cero");
+}
+    return [
+    "nombreActividad" => trim($nombre),
+    "fechaEvento" => $fecha,
+    "municipio" => trim($municipio),
+    "totalRecaudado" => (float)$totalRecaudado
+];
 }
 
 function validarId($id){
@@ -86,7 +97,7 @@ try{
                 $datos["idActividad"]=validarId($datos["idActividad"] ?? null);
                 $datos = array_merge($datos,validarActividad($datos));
 
-                if($actividad->editar($datos)){
+                if (!$actividad->editar($datos)) {
                     http_response_code(404);
                     throw new Exception("No se encontro la actividad");
                 }
@@ -100,7 +111,7 @@ try{
                 $datos = leerDatos();
                 $idActividad = validarId($datos["idActividad"] ?? null);
     
-                if (!$actividad->eliminar($datos)){
+                if (!$actividad->eliminar($idActividad)) {
                     http_response_code(404);
                     throw new Exception("No se encontro la actividad");
                 }
@@ -117,11 +128,11 @@ try{
     http_response_code(500);
     echo json_encode([
         "success" => false,
-        "message" => "Error en la base de datos" . $e->getMessage()
+        "mensaje" => "Error en la base de datos: " . $e->getMessage()
     ]);
 } catch (Exception $e){
     echo json_encode([
         "success" => false,
-        "message" => $e->getMessage()
+        "mensaje" => $e->getMessage()
     ]);
 }

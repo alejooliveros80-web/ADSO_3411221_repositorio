@@ -15,10 +15,16 @@ class Actividad
 
 public function obtenerActividades()
 {
-    $sql = "SELECT * FROM actividades ORDER BY fechaEvento ASC";
-    $consulta = $this->conexion->prepare($sql);
-    $consulta->execute();
-    return $consulta->fetchAll();
+    $sql = "SELECT actividades.*,
+        (SELECT COUNT(*)
+         FROM actividades_asociado
+         WHERE actividades_asociado.idActividad = actividades.idActividad)
+         AS cantidadInscritos
+        FROM actividades
+        ORDER BY fechaEvento ASC";
+        $consulta = $this->conexion->prepare($sql);
+$consulta->execute();
+return $consulta->fetchAll();
 }
 
 public function guardar($datos)
@@ -45,7 +51,7 @@ public function eliminar($idActividad)
 public function editar($datos){
     $sql = "UPDATE actividades SET nombreActividad = :nombreActividad, municipio = :municipio, fechaEvento = :fechaEvento, totalRecaudado = :totalRecaudado WHERE idActividad = :idActividad";
     $consulta = $this->conexion->prepare($sql);
-    return $consulta->execute([
+    $ejecutada = $consulta->execute([
         ":nombreActividad" => $datos['nombreActividad'],
         ":municipio" => $datos['municipio'],
         ":fechaEvento" => $datos['fechaEvento'],
