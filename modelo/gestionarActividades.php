@@ -6,9 +6,9 @@ header("content-type: application/json; charset=UTF-8");
 function leerdatos()
  {      
     $datos = json_decode(file_get_contents("php://input"), true);
-    if(json_last_error() !== JSON_ERROR_NONE){
+        if (!is_array($datos)) {
         http_response_code(400);
-        throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+        throw new Exception("Los datos enviados no tienen un formato válido");
     }
     return $datos;
 }
@@ -30,9 +30,9 @@ $fechaCorrecta = $fechaValida &&
         );
     }
     $totalRecaudado = $datos["totalRecaudado"] ?? null;
-if (!is_numeric($totalRecaudado) || (float)$totalRecaudado < 0) {
+if (!is_numeric($totalRecaudado) || (float)$totalRecaudado < 0 || (float)$totalRecaudado > 9999999999.99 || (float)$totalRecaudado !== round((float)$totalRecaudado, 2)) {
     http_response_code(400);
-    throw new Exception("El total recaudado debe ser igual o mayor que cero");
+    throw new Exception("El total debe estar entre 0 y 9999999999.99 y tener máximo dos decimales");
 }
     return [
     "nombreActividad" => trim($nombre),
@@ -49,7 +49,6 @@ function validarId($id){
         throw new Exception("El identificador de la actividad no es valido");
     }
     return $idActividad;
-
 }
 
 

@@ -44,6 +44,20 @@ try {
     require_once __DIR__ . "/../config/conexion.php";
     $conexion = (new Conexion())->conectar();
 
+       $consultaActividad = $conexion->prepare(
+        "SELECT 1 FROM actividades WHERE idActividad = :idActividad"
+    );
+    $consultaActividad->execute([":idActividad" => $idActividad]);
+
+    if (!$consultaActividad->fetchColumn()) {
+        http_response_code(404);
+        echo json_encode([
+            "success" => false,
+            "mensaje" => "La actividad no existe"
+        ]);
+        exit;
+    }
+
     $consultaAsociado = $conexion->prepare(
         "SELECT idAsociado FROM asociados WHERE documento = :documento"
     );
