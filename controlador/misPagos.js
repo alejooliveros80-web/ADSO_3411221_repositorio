@@ -27,7 +27,7 @@ async function cargarMisPagos() {
         if (resultado.prestamos.length === 0) {
             const fila = document.createElement("tr");
             const celda = agregarCelda(fila, "No tienes solicitudes ni préstamos registrados");
-            celda.colSpan = 5;
+            celda.colSpan = 6;
             listaMisPrestamos.appendChild(fila);
         } else {
             resultado.prestamos.forEach(function (prestamo) {
@@ -40,6 +40,7 @@ async function cargarMisPagos() {
                         currency: "COP"
                     }).format(Number(prestamo.valorPrestamo))
                 );
+                agregarCelda(fila, new Intl.NumberFormat("es-CO", {style: "currency",currency: "COP"}).format(Number(prestamo.saldoPendiente)));
                 agregarCelda(fila, `${Number(prestamo.tasaInteres).toFixed(2)} %`);
                 agregarCelda(fila, prestamo.numeroCuotas);
                 agregarCelda(fila, prestamo.fechaPrestamo);

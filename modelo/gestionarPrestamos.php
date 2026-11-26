@@ -102,18 +102,14 @@ try {
         $bloquearAsociado->execute([":idAsociado" => $solicitud["idAsociado"]]);
 
         $consultaVigentes = $conexion->prepare(
-            "SELECT
-                COUNT(*) AS cantidadVigentes,
-                COALESCE(SUM(prestamos.valorPrestamo), 0) AS sumaVigente
-             FROM prestamos
-             LEFT JOIN (
-                SELECT idPrestamo, COUNT(*) AS cuotasPagadas
+                       "SELECT COUNT(CASE WHEN prestamos.valorPrestamo - COALESCE(pagos.totalPagado, 0) > 0 THEN 1 END ) AS cantidadVigentes,
+                COALESCE( SUM( GREATEST( prestamos.valorPrestamo - COALESCE(pagos.totalPagado, 0), 0 ) ), 0 ) AS sumaVigente
+             FROM prestamos LEFT JOIN (
+                SELECT idPrestamo, SUM(valorCuota) AS totalPagado
                 FROM pagos_cuotas
                 GROUP BY idPrestamo
              ) AS pagos ON pagos.idPrestamo = prestamos.idPrestamo
-             WHERE prestamos.idAsociado = :idAsociado
-               AND prestamos.estado = 'Aprobado'
-               AND COALESCE(pagos.cuotasPagadas, 0) < prestamos.numeroCuotas"
+             WHERE prestamos.idAsociado = :idAsociado AND prestamos.estado = 'Aprobado'"
         );
         $consultaVigentes->execute([":idAsociado" => $solicitud["idAsociado"]]);
         $prestamosVigentes = $consultaVigentes->fetch();

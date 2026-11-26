@@ -43,11 +43,22 @@ try {
     }
 
     // Consulta las solicitudes y préstamos del asociado.
-    $consultaPrestamos = $conexion->prepare(
-        "SELECT idPrestamo, valorPrestamo, tasaInteres, numeroCuotas, fechaPrestamo, estado
+      $consultaPrestamos = $conexion->prepare(
+        "SELECT prestamos.idPrestamo, prestamos.valorPrestamo,
+                prestamos.tasaInteres, prestamos.numeroCuotas,
+                prestamos.fechaPrestamo, prestamos.estado,
+                GREATEST(
+                    prestamos.valorPrestamo - COALESCE(pagos.totalPagado, 0),
+                    0
+                ) AS saldoPendiente
          FROM prestamos
-         WHERE idAsociado = :idAsociado
-         ORDER BY fechaPrestamo DESC, idPrestamo DESC"
+         LEFT JOIN (
+             SELECT idPrestamo, SUM(valorCuota) AS totalPagado
+             FROM pagos_cuotas
+             GROUP BY idPrestamo
+         ) AS pagos ON pagos.idPrestamo = prestamos.idPrestamo
+         WHERE prestamos.idAsociado = :idAsociado
+         ORDER BY prestamos.fechaPrestamo DESC, prestamos.idPrestamo DESC"
     );
     $consultaPrestamos->execute([":idAsociado" => $idAsociado]);
 
