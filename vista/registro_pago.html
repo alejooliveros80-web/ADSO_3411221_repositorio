@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de pago | Club Acerías</title>
     <link rel="stylesheet" href="../assets/css/formularios.css">
 </head>
+
 <body class="form-page">
     <header class="site-header">
         <div class="header-inner">
@@ -25,59 +27,46 @@
             <p>Registra el pago realizado y asócialo con un miembro del club.</p>
         </div>
         <section class="form-card">
-            <form>
+            <form id="formularioPago">
                 <div class="form-grid">
+                    <!-- Identifica al asociado al que pertenece el préstamo. -->
                     <div class="form-field">
                         <label for="documentoAsociado">Documento del asociado</label>
-                        <input type="text" id="documentoAsociado" name="documentoAsociado" required placeholder="Número de documento">
+                        <input type="text" id="documentoAsociado" name="documentoAsociado" required
+                            placeholder="Número de documento">
                     </div>
+
+                    <!-- Indica a cuál de los préstamos del asociado se aplica el pago. -->
                     <div class="form-field">
-                        <label for="nombreAsociado">Nombre del asociado</label>
-                        <input type="text" id="nombreAsociado" name="nombreAsociado" required placeholder="Nombre completo">
+                        <label for="idPrestamo">ID del préstamo</label>
+                        <input type="number" id="idPrestamo" name="idPrestamo" min="1" step="1" required
+                            placeholder="ID del préstamo">
                     </div>
+
+                    <!-- Guarda la fecha en que se recibió el pago. -->
                     <div class="form-field">
                         <label for="fechaPago">Fecha del pago</label>
                         <input type="date" id="fechaPago" name="fechaPago" required>
                     </div>
+
+                    <!-- Guarda el valor pagado por el asociado. -->
                     <div class="form-field">
-                        <label for="concepto">Concepto</label>
-                        <select id="concepto" name="concepto" required>
-                            <option value="">Selecciona un concepto</option>
-                            <option>Cuota de afiliación</option><option>Cuota mensual</option><option>Abono a préstamo</option><option>Otro</option>
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="valor">Valor pagado</label>
-                        <input type="number" id="valor" name="valor" min="1" step="100" required placeholder="$ 0">
-                    </div>
-                    <div class="form-field">
-                        <label for="metodo">Método de pago</label>
-                        <select id="metodo" name="metodo" required>
-                            <option value="">Selecciona un método</option>
-                            <option>Efectivo</option><option>Transferencia</option><option>Consignación</option><option>Otro</option>
-                        </select>
-                    </div>
-                    <div class="form-field">
-                        <label for="referencia">Número de referencia</label>
-                        <input type="text" id="referencia" name="referencia" placeholder="Opcional">
-                    </div>
-                    <div class="form-field">
-                        <label for="estadoPago">Estado</label>
-                        <select id="estadoPago" name="estadoPago" required>
-                            <option value="">Selecciona el estado</option><option>Pagado</option><option>Pendiente</option>
-                        </select>
-                    </div>
-                    <div class="form-field full-width">
-                        <label for="observaciones">Observaciones</label>
-                        <textarea id="observaciones" name="observaciones" placeholder="Notas adicionales"></textarea>
+                        <label for="valorCuota">Valor pagado</label>
+                        <input type="number" id="valorCuota" name="valorCuota" min="0.01" step="0.01" required
+                            placeholder="$ 0.00">
                     </div>
                 </div>
+
                 <div class="form-actions">
                     <button class="button-secondary" type="reset">Limpiar</button>
-                    <button class="button-primary" type="button">Guardar pago</button>
+                    <button class="button-primary" type="submit">Guardar pago</button>
                 </div>
+
+                <p id="mensajePago" role="status" aria-live="polite"></p>
             </form>
         </section>
     </main>
+    <script src="../controlador/pagos.js"></script>
 </body>
+
 </html>

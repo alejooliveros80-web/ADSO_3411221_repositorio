@@ -9,16 +9,17 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-// Solo un administrador puede registrar préstamos.
-if (!isset($_SESSION["rol"])) {
+// El asociado debe haber iniciado sesión.
+if (!isset($_SESSION["rol"], $_SESSION["documentos"])) {
     http_response_code(401);
     echo json_encode(["success" => false, "mensaje" => "Inicia sesión primero"]);
     exit;
 }
 
-if (strtolower($_SESSION["rol"]) !== "admin") {
+// Este formulario es para solicitudes de asociados.
+if (strtolower($_SESSION["rol"]) !== "asociado") {
     http_response_code(403);
-    echo json_encode(["success" => false, "mensaje" => "Solo un administrador puede registrar préstamos"]);
+    echo json_encode(["success" => false, "mensaje" => "Solo un asociado puede solicitar un préstamo"]);
     exit;
 }
 
@@ -31,7 +32,7 @@ if (!is_array($datos) || json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-$documento = $datos["documentoAsociado"] ?? "";
+$documento = (string)($_SESSION["documentos"] ?? "");
 $fechaPrestamo = $datos["fechaPrestamo"] ?? null;
 $valorPrestamo = $datos["valorPrestamo"] ?? null;
 $tasaInteres = $datos["tasaInteres"] ?? null;
@@ -90,41 +91,10 @@ try {
         exit;
     }
 
-    // Cuenta los préstamos vigentes y suma sus montos originales.
-    $consultaVigentes = $conexion->prepare(
-        "SELECT
-            COUNT(*) AS cantidadVigentes,
-            COALESCE(SUM(prestamos.valorPrestamo), 0) AS sumaVigente
-         FROM prestamos
-         LEFT JOIN (
-            SELECT idPrestamo, COUNT(*) AS cuotasPagadas
-            FROM pagos_cuotas
-            GROUP BY idPrestamo
-         ) AS pagos ON pagos.idPrestamo = prestamos.idPrestamo
-         WHERE prestamos.idAsociado = :idAsociado
-           AND COALESCE(pagos.cuotasPagadas, 0) < prestamos.numeroCuotas"
-    );
-    $consultaVigentes->execute([":idAsociado" => $idAsociado]);
-    $prestamosVigentes = $consultaVigentes->fetch();
-
-    if ((int)$prestamosVigentes["cantidadVigentes"] >= 3) {
-        http_response_code(409);
-        echo json_encode(["success" => false, "mensaje" => "El asociado ya tiene 3 préstamos vigentes"]);
-        exit;
-    }
-
-    if ((float)$prestamosVigentes["sumaVigente"] + (float)$valorPrestamo > 80000000) {
-        http_response_code(409);
-        echo json_encode(["success" => false, "mensaje" => "La suma de los préstamos vigentes superaría los 80 millones"]);
-        exit;
-    }
-
     // Guarda el préstamo con los nombres de columnas de la tabla.
     $consultaPrestamo = $conexion->prepare(
-        "INSERT INTO prestamos
-            (valorPrestamo, tasaInteres, numeroCuotas, fechaPrestamo, idAsociado)
-         VALUES
-            (:valorPrestamo, :tasaInteres, :numeroCuotas, :fechaPrestamo, :idAsociado)"
+        "INSERT INTO prestamos (valorPrestamo, tasaInteres, numeroCuotas, fechaPrestamo, idAsociado, estado)
+         VALUES (:valorPrestamo, :tasaInteres, :numeroCuotas, :fechaPrestamo, :idAsociado, :estado)"
     );
 
     $consultaPrestamo->execute([
@@ -132,13 +102,14 @@ try {
         ":tasaInteres" => number_format((float)$tasaInteres, 2, ".", ""),
         ":numeroCuotas" => $numeroCuotas,
         ":fechaPrestamo" => $fechaPrestamo,
-        ":idAsociado" => $idAsociado
+        ":idAsociado" => $idAsociado,
+        ":estado" => "Pendiente"
     ]);
 
     http_response_code(201);
     echo json_encode([
         "success" => true,
-        "mensaje" => "Préstamo guardado correctamente"
+        "mensaje" => "Solicitud enviada para aprobación"
     ]);
 } catch (PDOException $error) {
     error_log("Error al guardar el préstamo: " . $error->getMessage());

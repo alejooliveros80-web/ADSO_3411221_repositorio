@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis pagos | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
+</head>
+
+<body class="form-page">
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Navegación del sistema">
+                <a href="dashboard.html">Panel</a>
+                <a href="mis_pagos.html" aria-current="page">Mis pagos</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="page-heading">
+            <h1>Mis pagos y préstamos</h1>
+            <p>Consulta el estado de tus solicitudes y los pagos registrados.</p>
+        </div>
+
+        <!-- Muestra las solicitudes y préstamos del asociado. -->
+        <section class="form-card">
+            <h2>Mis solicitudes y préstamos</h2>
+            <p id="mensajePrestamos" role="status" aria-live="polite">Cargando información...</p>
+
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Monto</th>
+                            <th>Tasa</th>
+                            <th>Cuotas</th>
+                            <th>Fecha de solicitud</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaMisPrestamos">
+                        <tr>
+                            <td colspan="5">Tus solicitudes y préstamos aparecerán aquí.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Muestra los pagos que se han registrado para el asociado. -->
+        <section class="form-card">
+            <h2>Historial de pagos</h2>
+            <p id="mensajePagos" role="status" aria-live="polite">Cargando pagos...</p>
+
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID del préstamo</th>
+                            <th>Valor pagado</th>
+                            <th>Fecha de pago</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaMisPagos">
+                        <tr>
+                            <td colspan="3">Tus pagos aparecerán aquí.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script src="../controlador/misPagos.js"></script>
+</body>
+
+</html>

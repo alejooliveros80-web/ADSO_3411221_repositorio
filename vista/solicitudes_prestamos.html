@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitudes de préstamos | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
+</head>
+
+<body class="form-page">
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Navegación del sistema">
+                <a href="dashboard.html">Panel</a>
+                <a href="solicitudes_prestamos.html" aria-current="page">Solicitudes</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="page-heading">
+            <h1>Solicitudes de préstamos</h1>
+            <p>Revisa y decide sobre las solicitudes enviadas por los asociados.</p>
+        </div>
+
+        <section class="form-card">
+            <!-- Aquí se mostrarán mensajes de carga o errores. -->
+            <p id="mensajeSolicitudes" role="status" aria-live="polite">
+                Cargando solicitudes...
+            </p>
+
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Asociado</th>
+                            <th>Documento</th>
+                            <th>Monto</th>
+                            <th>Tasa</th>
+                            <th>Cuotas</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaSolicitudes">
+                        <tr>
+                            <td colspan="7">Las solicitudes aparecerán aquí.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script src="../controlador/solicitudesPrestamos.js"></script>
+</body>
+
+</html>

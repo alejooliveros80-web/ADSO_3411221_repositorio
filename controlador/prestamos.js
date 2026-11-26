@@ -8,7 +8,6 @@ formularioPrestamo.addEventListener("submit", async function (evento) {
 
     // Prepara los datos con los nombres que usaremos en PHP y MySQL.
     const datos = {
-        documentoAsociado: document.getElementById("documentoAsociado").value.trim(),
         fechaPrestamo: document.getElementById("fechaSolicitud").value,
         valorPrestamo: Number(document.getElementById("monto").value),
         tasaInteres: Number(document.getElementById("tasa").value),
