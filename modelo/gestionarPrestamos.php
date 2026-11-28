@@ -19,31 +19,14 @@ if (!isset($_SESSION["rol"]) || strtolower($_SESSION["rol"]) !== "admin") {
 }
 
 try {
-    require_once __DIR__ . "/../config/conexion.php";
-    $conexion = (new Conexion())->conectar();
+    require_once __DIR__ . "/prestamo.php";
+    $prestamo = new Prestamo();
 
     // GET devuelve las solicitudes que todavía están pendientes.
     if ($metodo === "GET") {
-        $consulta = $conexion->query(
-            "SELECT
-                prestamos.idPrestamo,
-                asociados.nombres,
-                asociados.apellidos,
-                asociados.documento,
-                prestamos.valorPrestamo,
-                prestamos.tasaInteres,
-                prestamos.numeroCuotas,
-                prestamos.fechaPrestamo
-             FROM prestamos
-             INNER JOIN asociados
-                 ON asociados.idAsociado = prestamos.idAsociado
-             WHERE prestamos.estado = 'Pendiente'
-             ORDER BY prestamos.fechaPrestamo ASC"
-        );
-
         echo json_encode([
             "success" => true,
-            "solicitudes" => $consulta->fetchAll()
+            "solicitudes" => $prestamo->obtenerSolicitudesPendientes()
         ]);
         exit;
     }
@@ -71,95 +54,14 @@ try {
         exit;
     }
 
-    $conexion->beginTransaction();
-
-    // Solo permite decidir un préstamo que aún siga pendiente.
-    $consultaSolicitud = $conexion->prepare(
-        "SELECT idAsociado, valorPrestamo
-         FROM prestamos
-         WHERE idPrestamo = :idPrestamo
-           AND estado = 'Pendiente'
-         FOR UPDATE"
-    );
-    $consultaSolicitud->execute([":idPrestamo" => $idPrestamo]);
-    $solicitud = $consultaSolicitud->fetch();
-
-    if (!$solicitud) {
-        $conexion->rollBack();
-        http_response_code(404);
-        echo json_encode(["success" => false, "mensaje" => "No existe una solicitud pendiente con ese ID"]);
-        exit;
-    }
-
-    // Antes de aprobar, verifica los préstamos aprobados y vigentes del asociado.
-    if ($decision === "Aprobado") {
-        $bloquearAsociado = $conexion->prepare(
-            "SELECT idAsociado
-             FROM asociados
-             WHERE idAsociado = :idAsociado
-             FOR UPDATE"
-        );
-        $bloquearAsociado->execute([":idAsociado" => $solicitud["idAsociado"]]);
-
-        $consultaVigentes = $conexion->prepare(
-                       "SELECT COUNT(CASE WHEN prestamos.valorPrestamo - COALESCE(pagos.totalPagado, 0) > 0 THEN 1 END ) AS cantidadVigentes,
-                COALESCE( SUM( GREATEST( prestamos.valorPrestamo - COALESCE(pagos.totalPagado, 0), 0 ) ), 0 ) AS sumaVigente
-             FROM prestamos LEFT JOIN (
-                SELECT idPrestamo, SUM(valorCuota) AS totalPagado
-                FROM pagos_cuotas
-                GROUP BY idPrestamo
-             ) AS pagos ON pagos.idPrestamo = prestamos.idPrestamo
-             WHERE prestamos.idAsociado = :idAsociado AND prestamos.estado = 'Aprobado'"
-        );
-        $consultaVigentes->execute([":idAsociado" => $solicitud["idAsociado"]]);
-        $prestamosVigentes = $consultaVigentes->fetch();
-
-        if ((int)$prestamosVigentes["cantidadVigentes"] >= 3) {
-            $conexion->rollBack();
-            http_response_code(409);
-            echo json_encode([
-                "success" => false,
-                "mensaje" => "No se puede aprobar: el asociado ya tiene 3 préstamos vigentes"
-            ]);
-            exit;
-        }
-
-        if ((float)$prestamosVigentes["sumaVigente"] + (float)$solicitud["valorPrestamo"] > 80000000) {
-            $conexion->rollBack();
-            http_response_code(409);
-            echo json_encode([
-                "success" => false,
-                "mensaje" => "No se puede aprobar: la suma superaría los 80 millones"
-            ]);
-            exit;
-        }
-    }
-
-    // Guarda la decisión del administrador.
-    $actualizar = $conexion->prepare(
-        "UPDATE prestamos
-         SET estado = :estado
-         WHERE idPrestamo = :idPrestamo
-           AND estado = 'Pendiente'"
-    );
-    $actualizar->execute([
-        ":estado" => $decision,
-        ":idPrestamo" => $idPrestamo
-    ]);
-
-    $conexion->commit();
-
+    // El modelo aplica la decisión y las reglas de préstamos vigentes.
+    $resultado = $prestamo->decidirSolicitud($idPrestamo, $decision);
+    http_response_code($resultado["status"]);
     echo json_encode([
-        "success" => true,
-        "mensaje" => $decision === "Aprobado"
-            ? "Solicitud aprobada"
-            : "Solicitud rechazada"
+        "success" => $resultado["status"] === 200,
+        "mensaje" => $resultado["mensaje"]
     ]);
 } catch (PDOException $error) {
-    if (isset($conexion) && $conexion->inTransaction()) {
-        $conexion->rollBack();
-    }
-
     error_log("Error al gestionar la solicitud de préstamo: " . $error->getMessage());
     http_response_code(500);
     echo json_encode(["success" => false, "mensaje" => "Error en la base de datos"]);

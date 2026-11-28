@@ -43,25 +43,21 @@ if ($nombreActividad === "" || strlen($nombreActividad) > 100 ||
 }
 
 try {
-    // Abre la conexión y guarda la actividad con una consulta preparada.
-    require_once __DIR__ . "/../config/conexion.php";
-    $conexion = (new Conexion())->conectar();
-    $consulta = $conexion->prepare(
-        "INSERT INTO actividades (nombreActividad, fechaEvento, municipio, totalRecaudado)
-         VALUES (:nombreActividad, :fechaEvento, :municipio, :totalRecaudado)"
-    );
-    $consulta->execute([
-        ":nombreActividad" => $nombreActividad,
-        ":fechaEvento" => $fechaEvento,
-        ":municipio" => $municipio,
-        ":totalRecaudado" => number_format((float)$totalRecaudado, 2, ".", "")
+    // Guarda la actividad usando el modelo Actividad.
+    require_once __DIR__ . "/actividad.php";
+    $actividad = new Actividad();
+    $actividad->guardar([
+        "nombreActividad" => $nombreActividad,
+        "fechaEvento" => $fechaEvento,
+        "municipio" => $municipio,
+        "totalRecaudado" => number_format((float)$totalRecaudado, 2, ".", "")
     ]);
 
     // Confirma que MySQL guardó la actividad.
     echo json_encode([
         "success" => true,
         "mensaje" => "Actividad guardada correctamente.",
-        "idActividad" => (int)$conexion->lastInsertId()
+        "idActividad" => $actividad->obtenerUltimoId()
     ]);
 } catch (PDOException $error) {
     error_log("Error al guardar actividad: " . $error->getMessage());

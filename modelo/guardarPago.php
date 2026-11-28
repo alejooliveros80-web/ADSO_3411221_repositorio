@@ -9,16 +9,18 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     exit;
 }
 
-// Solo un administrador puede registrar pagos.
-if (!isset($_SESSION["rol"])) {
+// El usuario debe tener sesión y pertenecer a un rol permitido.
+if (!isset($_SESSION["rol"], $_SESSION["documentos"])) {
     http_response_code(401);
     echo json_encode(["success" => false, "mensaje" => "Inicia sesión primero"]);
     exit;
 }
 
-if (strtolower($_SESSION["rol"]) !== "admin") {
+$rolUsuario = strtolower($_SESSION["rol"]);
+
+if (!in_array($rolUsuario, ["admin", "asociado"], true)) {
     http_response_code(403);
-    echo json_encode(["success" => false, "mensaje" => "Solo un administrador puede registrar pagos"]);
+    echo json_encode(["success" => false, "mensaje" => "No tienes permiso para registrar pagos"]);
     exit;
 }
 
@@ -31,7 +33,7 @@ if (!is_array($datos) || json_last_error() !== JSON_ERROR_NONE) {
     exit;
 }
 
-$documento = $datos["documentoAsociado"] ?? "";
+$documento = $rolUsuario === "asociado" ? (string)$_SESSION["documentos"] : ($datos["documentoAsociado"] ?? "");
 $fechaPago = $datos["fechaPago"] ?? null;
 $valorCuota = $datos["valorCuota"] ?? null;
 
@@ -72,80 +74,17 @@ if (
 }
 
 try {
-    require_once __DIR__ . "/../config/conexion.php";
-    $conexion = (new Conexion())->conectar();
-    $conexion->beginTransaction();
+    // Registra el pago mediante el modelo Pago.
+    require_once __DIR__ . "/pago.php";
+    $pago = new Pago();
+    $resultado = $pago->registrar($documento, $idPrestamo, $fechaPago, $valorCuota);
 
-    // Comprueba que el préstamo exista y pertenezca al asociado indicado.
-    $consultaPrestamo = $conexion->prepare(
-        "SELECT prestamos.numeroCuotas
-         FROM prestamos
-         INNER JOIN asociados
-             ON asociados.idAsociado = prestamos.idAsociado
-         WHERE prestamos.idPrestamo = :idPrestamo
-           AND asociados.documento = :documento
-           AND prestamos.estado = 'Aprobado'
-         FOR UPDATE"
-    );
-
-    $consultaPrestamo->execute([
-        ":idPrestamo" => $idPrestamo,
-        ":documento" => trim($documento)
-    ]);
-
-    $numeroCuotas = $consultaPrestamo->fetchColumn();
-
-    if ($numeroCuotas === false) {
-        $conexion->rollBack();
-        http_response_code(404);
-        echo json_encode([
-            "success" => false,
-            "mensaje" => "No existe un préstamo aprobado para el asociado indicado"
-        ]);
-        exit;
-    }
-
-    // Cuenta cuántas cuotas ya se registraron para ese préstamo.
-    $consultaPagos = $conexion->prepare(
-        "SELECT COUNT(*) FROM pagos_cuotas WHERE idPrestamo = :idPrestamo"
-    );
-    $consultaPagos->execute([":idPrestamo" => $idPrestamo]);
-    $cuotasPagadas = (int)$consultaPagos->fetchColumn();
-
-    if ($cuotasPagadas >= (int)$numeroCuotas) {
-        $conexion->rollBack();
-        http_response_code(409);
-        echo json_encode([
-            "success" => false,
-            "mensaje" => "El préstamo ya tiene registradas todas sus cuotas"
-        ]);
-        exit;
-    }
-
-    // Guarda el pago usando las columnas de la tabla pagos_cuotas.
-    $consultaGuardar = $conexion->prepare(
-        "INSERT INTO pagos_cuotas (valorCuota, fechaPago, idPrestamo)
-         VALUES (:valorCuota, :fechaPago, :idPrestamo)"
-    );
-
-    $consultaGuardar->execute([
-        ":valorCuota" => number_format((float)$valorCuota, 2, ".", ""),
-        ":fechaPago" => $fechaPago,
-        ":idPrestamo" => $idPrestamo
-    ]);
-
-    $conexion->commit();
-
-    http_response_code(201);
+    http_response_code($resultado["status"]);
     echo json_encode([
-        "success" => true,
-        "mensaje" => "Pago registrado correctamente"
+        "success" => $resultado["status"] === 201,
+        "mensaje" => $resultado["mensaje"]
     ]);
 } catch (PDOException $error) {
-    if (isset($conexion) && $conexion->inTransaction()) {
-        $conexion->rollBack();
-    }
-
     error_log("Error al guardar el pago: " . $error->getMessage());
     http_response_code(500);
     echo json_encode([

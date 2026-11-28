@@ -138,3 +138,21 @@ body.form-page {
 }
 .enroll-button:hover:not(:disabled) { background: var(--club-red-dark); }
 .enroll-button:disabled { background: #aeb4bb; cursor: not-allowed; }
+
+/* Alinea el aviso y el botón para abrir el formulario de asociados. */
+.management-actions { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.management-actions .empty-message { margin: 0; }
+.management-actions .button-primary { min-height: 42px; border: 0; border-radius: 7px; padding: 10px 18px; font: inherit; font-weight: 700; cursor: pointer; white-space: nowrap; }
+.management-form { margin-bottom: 20px; }
+.management-form[hidden] { display: none; }
+.management-actions .button-primary:hover { background: var(--club-red-dark); }
+
+/* Mantiene visibles las acciones de edición y eliminación en cada fila. */
+.management-row-actions { display: flex; gap: 8px; }
+.management-row-actions button { border: 0; border-radius: 6px; padding: 7px 10px; font: inherit; cursor: pointer; }
+.management-edit { background: #e8ebef; color: var(--club-ink); }
+.management-delete { background: var(--club-red); color: #fff; }
+
+@media (max-width: 640px) {
+    .management-actions { align-items: stretch; flex-direction: column; }
+}

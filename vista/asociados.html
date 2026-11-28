@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de asociados | Club Acerías</title>
+    <link rel="stylesheet" href="../assets/css/formularios.css">
+</head>
+
+<body class="form-page">
+    <header class="site-header">
+        <div class="header-inner">
+            <p class="brand">CLUB ACERÍAS</p>
+            <nav class="form-nav" aria-label="Navegación del sistema">
+                <a href="asociados.html" aria-current="page">Asociados</a>
+                <a href="actividades.html">Actividades</a>
+                <a href="solicitudes_prestamos.html">Solicitudes</a>
+                <a href="dashboard.html">Panel</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="page-content">
+        <div class="page-heading">
+            <h1>Gestión de asociados</h1>
+            <p>Consulta, crea, edita o elimina las cuentas de asociados.</p>
+        </div>
+
+        <section class="form-card activity-actions management-actions">
+            <span id="mensajeAsociados" class="empty-message" role="status" aria-live="polite">Cargando asociados...</span>
+            <button id="botonNuevoAsociado" class="button-primary" type="button">Nuevo asociado</button>
+        </section>
+
+        <!-- El mismo formulario sirve para crear un asociado o editar sus datos. -->
+        <section id="panelFormulario" class="form-card management-form" hidden>
+            <h2 id="tituloFormulario">Crear asociado</h2>
+            <p id="ayudaContrasena" class="form-hint">La contraseña debe tener mínimo 8 caracteres.</p>
+            <form id="formAsociado">
+                <input type="hidden" id="idAsociado" name="idAsociado">
+                <div class="form-grid">
+                    <div class="form-field">
+                        <label for="documento">Documento</label>
+                        <input type="text" id="documento" name="documento" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="fechaNacimiento">Fecha de nacimiento</label>
+                        <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="nombres">Nombres</label>
+                        <input type="text" id="nombres" name="nombres" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="apellidos">Apellidos</label>
+                        <input type="text" id="apellidos" name="apellidos" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="genero">Género</label>
+                        <select id="genero" name="genero" required>
+                            <option value="">Selecciona una opción</option>
+                            <option value="Masculino">Masculino</option>
+                            <option value="Femenino">Femenino</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-field">
+                        <label for="ciudad">Ciudad</label>
+                        <input type="text" id="ciudad" name="ciudad" required>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="direccionResidencia">Dirección de residencia</label>
+                        <input type="text" id="direccionResidencia" name="direccionResidencia" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="telefono">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" required>
+                    </div>
+                    <div class="form-field">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-field full-width">
+                        <label for="panswoard">Contraseña</label>
+                        <input type="password" id="panswoard" name="panswoard" minlength="8" autocomplete="new-password">
+                        <span id="notaContrasena" class="form-hint">Obligatoria para crear una cuenta.</span>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button id="botonCancelar" class="button-secondary" type="button">Cancelar</button>
+                    <button class="button-primary" type="submit">Guardar asociado</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="form-card">
+            <h2>Asociados registrados</h2>
+            <div class="table-wrapper">
+                <table class="activities-table">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Nombres</th>
+                            <th>Apellidos</th>
+                            <th>Fecha de nacimiento</th>
+                            <th>Género</th>
+                            <th>Dirección</th>
+                            <th>Ciudad</th>
+                            <th>Teléfono</th>
+                            <th>Correo</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaAsociados">
+                        <tr><td colspan="10">Los asociados aparecerán aquí.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+    <script src="../controlador/gestionarAsociados.js"></script>
+</body>
+
+</html>

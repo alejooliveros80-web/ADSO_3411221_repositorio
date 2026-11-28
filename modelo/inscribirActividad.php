@@ -41,49 +41,20 @@ if ($idActividad === false) {
 }
 
 try {
-    require_once __DIR__ . "/../config/conexion.php";
-    $conexion = (new Conexion())->conectar();
+    // Registra la inscripción mediante el modelo InscripcionActividad.
+    require_once __DIR__ . "/inscripcionActividad.php";
+    $inscripcion = new InscripcionActividad();
+    $resultado = $inscripcion->inscribir($idActividad, $_SESSION["documentos"]);
 
-       $consultaActividad = $conexion->prepare(
-        "SELECT 1 FROM actividades WHERE idActividad = :idActividad"
-    );
-    $consultaActividad->execute([":idActividad" => $idActividad]);
-
-    if (!$consultaActividad->fetchColumn()) {
-        http_response_code(404);
-        echo json_encode([
-            "success" => false,
-            "mensaje" => "La actividad no existe"
-        ]);
+    http_response_code($resultado["status"]);
+    if ($resultado["status"] !== 201) {
+        echo json_encode(["success" => false, "mensaje" => $resultado["mensaje"]]);
         exit;
     }
-
-    $consultaAsociado = $conexion->prepare(
-        "SELECT idAsociado FROM asociados WHERE documento = :documento"
-    );
-    $consultaAsociado->execute([
-        ":documento" => $_SESSION["documentos"]
-    ]);
-    $idAsociado = $consultaAsociado->fetchColumn();
-
-    if (!$idAsociado) {
-        http_response_code(404);
-        echo json_encode(["success" => false, "mensaje" => "No se encontró el asociado"]);
-        exit;
-    }
-
-    $consulta = $conexion->prepare(
-    "INSERT INTO actividades_asociado (idActividad, idAsociado)
-     VALUES (:idActividad, :idAsociado)"
-);
-    $consulta->execute([
-        ":idActividad" => $idActividad,
-        ":idAsociado" => $idAsociado
-    ]);
 
     echo json_encode([
         "success" => true,
-        "mensaje" => "Te inscribiste correctamente"
+        "mensaje" => $resultado["mensaje"]
     ]);
 } catch (PDOException $error) {
     if ($error->getCode() === "23000") {

@@ -11,18 +11,13 @@ if (empty($_SESSION["rol"])) {
 }
 
 try {
-    // Consulta MySQL y devuelve las actividades ordenadas por fecha.
-    require_once __DIR__ . "/../config/conexion.php";
-    $conexion = (new Conexion())->conectar();
-    $consulta = $conexion->query(
-        "SELECT idActividad, nombreActividad, fechaEvento, municipio, totalRecaudado
-         FROM actividades
-         ORDER BY fechaEvento ASC, idActividad DESC"
-    );
+    // Usa la clase Actividad para consultar los registros.
+    require_once __DIR__ . "/actividad.php";
+    $actividad = new Actividad();
 
     echo json_encode([
         "success" => true,
-        "actividades" => $consulta->fetchAll()
+        "actividades" => $actividad->listar()
     ]);
 } catch (PDOException $error) {
     error_log("Error al listar actividades: " . $error->getMessage());

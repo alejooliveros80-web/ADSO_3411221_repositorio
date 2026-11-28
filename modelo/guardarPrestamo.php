@@ -75,41 +75,26 @@ if (
 }
 
 try {
-    require_once __DIR__ . "/../config/conexion.php";
-    $conexion = (new Conexion())->conectar();
+    // Guarda la solicitud mediante el modelo Prestamo.
+    require_once __DIR__ . "/prestamo.php";
+    $prestamo = new Prestamo();
+    $resultado = $prestamo->guardarSolicitud($documento, [
+        "valorPrestamo" => $valorPrestamo,
+        "tasaInteres" => $tasaInteres,
+        "numeroCuotas" => $numeroCuotas,
+        "fechaPrestamo" => $fechaPrestamo
+    ]);
 
-    // Busca el ID interno del asociado usando su documento.
-    $consultaAsociado = $conexion->prepare(
-        "SELECT idAsociado FROM asociados WHERE documento = :documento"
-    );
-    $consultaAsociado->execute([":documento" => trim($documento)]);
-    $idAsociado = $consultaAsociado->fetchColumn();
-
-    if (!$idAsociado) {
-        http_response_code(404);
-        echo json_encode(["success" => false, "mensaje" => "No existe un asociado con ese documento"]);
+    http_response_code($resultado["status"]);
+    if ($resultado["status"] !== 201) {
+        echo json_encode(["success" => false, "mensaje" => $resultado["mensaje"]]);
         exit;
     }
 
-    // Guarda el préstamo con los nombres de columnas de la tabla.
-    $consultaPrestamo = $conexion->prepare(
-        "INSERT INTO prestamos (valorPrestamo, tasaInteres, numeroCuotas, fechaPrestamo, idAsociado, estado)
-         VALUES (:valorPrestamo, :tasaInteres, :numeroCuotas, :fechaPrestamo, :idAsociado, :estado)"
-    );
-
-    $consultaPrestamo->execute([
-        ":valorPrestamo" => number_format((float)$valorPrestamo, 2, ".", ""),
-        ":tasaInteres" => number_format((float)$tasaInteres, 2, ".", ""),
-        ":numeroCuotas" => $numeroCuotas,
-        ":fechaPrestamo" => $fechaPrestamo,
-        ":idAsociado" => $idAsociado,
-        ":estado" => "Pendiente"
-    ]);
-
-    http_response_code(201);
     echo json_encode([
         "success" => true,
-        "mensaje" => "Solicitud enviada para aprobación"
+        "mensaje" => "Solicitud enviada para aprobación",
+        "idPrestamo" => $resultado["idPrestamo"]
     ]);
 } catch (PDOException $error) {
     error_log("Error al guardar el préstamo: " . $error->getMessage());

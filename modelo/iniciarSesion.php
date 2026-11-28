@@ -30,13 +30,10 @@ try{
         throw new Exception("Email o contraseña invalidados");
     }
 
-    // Carga la conexión y busca al asociado por su correo.
-    require_once __DIR__ .'/../config/conexion.php';
-    $conexion = (new Conexion())->conectar();
-
-    $consulta =$conexion->prepare("SELECT * FROM asociados WHERE email = :email");
-    $consulta->execute([':email' => $email]);
-    $asociado =$consulta->fetch();
+    // Busca al asociado mediante el modelo Asociado.
+    require_once __DIR__ . "/asociados.php";
+    $modeloAsociado = new Asociado([]);
+    $asociado = $modeloAsociado->obtenerPorEmail($email);
 
     // Comprueba que exista el usuario y valida la contraseña con su hash.
     if (!$asociado || !password_verify($panswoard, $asociado['panswoard'])) {

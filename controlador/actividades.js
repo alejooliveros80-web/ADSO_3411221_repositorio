@@ -12,7 +12,7 @@ let esAsociado = false;
 let actividades = [];
 let idActividadEditando = null; // Guarda el ID cuando el administrador abre una actividad para editarla.
 
-async function solicitarApi(metodo, datos) {
+async function solicitarApi(metodo, datos, url = "../modelo/gestionarActividades.php") {
     const opciones = {
         method: metodo,
         headers: { 'Content-Type': 'application/json' }
@@ -22,7 +22,7 @@ async function solicitarApi(metodo, datos) {
         opciones.body = JSON.stringify(datos);
     }
 
-    const respuesta = await fetch("../modelo/gestionarActividades.php", opciones);
+    const respuesta = await fetch(url, opciones);
     const resultado = await respuesta.json();
 
     if (respuesta.status === 401) {
@@ -66,35 +66,51 @@ function mostrarActividades() {
         const celdaInscripcion = document.createElement("td");
 
         if (esAdministrador) {
-            const botonEditar = document.createElement("button");
-            botonEditar.type = "button";
-            botonEditar.className = "btn btn-warning btn-sm";
-            botonEditar.textContent = "Editar";
+            if (actividad.fechaDistribucion) {
+                celdaInscripcion.textContent = "Recaudo distribuido";
+            } else {
+                const botonEditar = document.createElement("button");
+                botonEditar.type = "button";
+                botonEditar.className = "btn btn-warning btn-sm";
+                botonEditar.textContent = "Editar";
 
-            botonEditar.addEventListener("click", () => {
-                abrirEditarActividad(actividad);
-            });
+                botonEditar.addEventListener("click", () => {
+                    abrirEditarActividad(actividad);
+                });
 
-            const botonEliminar = document.createElement("button");
-            botonEliminar.type = "button";
-            botonEliminar.className = "btn btn-danger btn-sm ms-2";
-            botonEliminar.textContent = "Eliminar";
+                const botonEliminar = document.createElement("button");
+                botonEliminar.type = "button";
+                botonEliminar.className = "btn btn-danger btn-sm ms-2";
+                botonEliminar.textContent = "Eliminar";
 
-            botonEliminar.addEventListener("click", () => {
-                eliminarActividad(actividad.idActividad);
-            });
+                botonEliminar.addEventListener("click", () => {
+                    eliminarActividad(actividad.idActividad);
+                });
 
-            celdaInscripcion.append(botonEditar, botonEliminar);
+                const botonDistribuir = document.createElement("button");
+                botonDistribuir.type = "button";
+                botonDistribuir.className = "btn btn-success btn-sm ms-2";
+                botonDistribuir.textContent = "Repartir 50/50";
+                botonDistribuir.addEventListener("click", () => {
+                    distribuirRecaudo(actividad.idActividad);
+                });
+
+                celdaInscripcion.append(botonEditar, botonEliminar, botonDistribuir);
+            }
 
         } else if (esAsociado) {
             const botonInscribirse = document.createElement("button");
             botonInscribirse.type = "button";
             botonInscribirse.className = "enroll-button";
-            botonInscribirse.textContent = "Inscribirme";
-
-            botonInscribirse.addEventListener("click", () => {
-                inscribirActividad(actividad.idActividad);
-            });
+            if (actividad.fechaDistribucion) {
+                botonInscribirse.textContent = "Inscripciones cerradas";
+                botonInscribirse.disabled = true;
+            } else {
+                botonInscribirse.textContent = "Inscribirme";
+                botonInscribirse.addEventListener("click", () => {
+                    inscribirActividad(actividad.idActividad);
+                });
+            }
             celdaInscripcion.append(botonInscribirse);
 
         } else {
@@ -120,6 +136,38 @@ function mostrarActividades() {
         listaActividades.append(fila);
 
     });
+}
+
+// Confirma el cierre y solicita al servidor repartir el recaudo una sola vez.
+async function distribuirRecaudo(idActividad) {
+    const confirmar = confirm(
+        "¿Repartir el 50 % al club y el 50 % entre los asociados inscritos? Esta acción no se puede repetir."
+    );
+
+    if (!confirmar) {
+        return;
+    }
+
+    try {
+        const resultado = await solicitarApi(
+            "POST",
+            { idActividad: Number(idActividad) },
+            "../modelo/distribuirActividad.php"
+        );
+
+        const detalle = resultado.repartoAsociados.map((asociado) =>
+            `${asociado.nombre} (${asociado.documento}): ${Number(asociado.valorRepartido).toLocaleString("es-CO", { style: "currency", currency: "COP" })}`
+        ).join("\n");
+        alert(
+            `${resultado.mensaje}\n` +
+            `Parte del club: ${Number(resultado.valorClub).toLocaleString("es-CO", { style: "currency", currency: "COP" })}\n` +
+            `Parte de los asociados (${resultado.cantidadAsociados}): ${Number(resultado.valorAsociados).toLocaleString("es-CO", { style: "currency", currency: "COP" })}\n\n` +
+            detalle
+        );
+        await cargarActividades();
+    } catch (error) {
+        alert("No se pudo distribuir el recaudo: " + error.message);
+    }
 }
 
 function crearCelda(texto) {
